@@ -75,6 +75,19 @@
     <script>
         const apiUrl = 'http://localhost:3000/pessoas';
 
+        // Funções para formatar data
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const [year, month, day] = dateStr.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr) return '';
+            const [day, month, year] = dateStr.split('/');
+            return `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
+        }
+
         // Carregar pessoas
         async function loadPessoas() {
             try {
@@ -128,7 +141,7 @@
                     document.getElementById('email').value = pessoa.email;
                     document.getElementById('cpf').value = pessoa.cpf;
                     document.getElementById('cpf').readOnly = true;
-                    document.getElementById('dataNascimento').value = pessoa.dataNascimento;
+                    document.getElementById('dataNascimento').value = parseDate(pessoa.dataNascimento);
                     document.getElementById('formHeader').textContent = 'Editar Pessoa';
                     document.getElementById('submitBtn').textContent = 'Atualizar';
                     document.getElementById('cancelBtn').style.display = 'inline-block';
@@ -164,7 +177,8 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const cpf = document.getElementById('cpf').value;
-            const dataNascimento = document.getElementById('dataNascimento').value;
+            const dataNascimentoRaw = document.getElementById('dataNascimento').value;
+            const dataNascimento = formatDate(dataNascimentoRaw);
 
             const body = { name, email, cpf, dataNascimento };
 
